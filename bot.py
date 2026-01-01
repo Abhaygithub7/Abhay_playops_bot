@@ -4,6 +4,7 @@ import random
 import re
 import os
 from dotenv import load_dotenv
+from keep_alive import keep_alive
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
@@ -207,8 +208,12 @@ async def handle_answer(message: Message):
 
 # --- RUN ---
 async def main():
-    print("🟢 TECH INTERVIEW BOT ONLINE")
-    await dp.start_polling(bot)
+    try:
+        keep_alive()  # Start Flask server
+        print("🟢 TECH INTERVIEW BOT ONLINE")
+        await dp.start_polling(bot)
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     asyncio.run(main())
